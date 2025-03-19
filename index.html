@@ -15,8 +15,9 @@
 
     <script>
         async function getOTP() {
+            alert('fun call);
             if (!('OTPCredential' in window)) {
-                console.log("Web OTP API not supported in this browser.");
+                alert("Web OTP API not supported in this browser.");
                 return;
             }
 
@@ -36,9 +37,9 @@
                 // Stop listening
                 abortController.abort();
 
-                console.log("OTP received:", otp.code);
+                alert("OTP received:", otp.code);
             } catch (error) {
-                console.error("Error getting OTP:", error);
+                alert("Error getting OTP:", error);
             }
         }
 
