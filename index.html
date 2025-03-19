@@ -1,52 +1,16 @@
-<!-- 123456 is your OTP for login. @yourwebsite.com #123456 -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTP Autofill with Mock Testing</title>
+    <title>Document</title>
 </head>
 
 <body>
-    <input type="text" id="otp" placeholder="Enter OTP">
-
-    <script>
-        async function getOTP() {
-            alert('fun call');
-            if (!('OTPCredential' in window)) {
-                alert("Web OTP API not supported in this browser.");
-                return;
-            }
-
-            try {
-                const otpInput = document.getElementById("otp");
-                const abortController = new AbortController();
-
-                // Listen for OTP
-                const otp = await navigator.credentials.get({
-                    otp: { transport: ["sms"] },
-                    signal: abortController.signal
-                });
-
-                // Fill the OTP input field
-                otpInput.value = otp.code;
-
-                // Stop listening
-                abortController.abort();
-
-                alert("OTP received:", otp.code);
-            } catch (error) {
-                alert("Error getting OTP:", error);
-            }
-        }
-
-        // Automatically trigger OTP retrieval on page load
-        setInterval(getOTP, 4000);
-
-    </script>
+    <form action="/verify-otp" method="POST">
+        <input type="text" inputmode="numeric" autocomplete="one-time-code" pattern="\d{6}" required>
+    </form>
 </body>
 
 </html>
