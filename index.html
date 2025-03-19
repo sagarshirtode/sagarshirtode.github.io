@@ -1,3 +1,6 @@
+<!-- 123456 is your OTP for login. @yourwebsite.com #123456 -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,35 +11,40 @@
 </head>
 
 <body>
-    <h2>Enter OTP</h2>
-    <input type="text" id="otp" maxlength="6" placeholder="Enter OTP" />
-    <script>
-        alert('send otp');
-        document.addEventListener('DOMContentLoaded', function () {
-            alert('load 1st DOMContentLoaded');
-            const otpInput = document.getElementById('otp');
+    <input type="text" id="otp" placeholder="Enter OTP">
 
-            // Check if WebOTP API is supported
-            if ('OTPCredential' in window) {
-                window.addEventListener('DOMContentLoaded', async () => {
-                    alert('load 2nd out DOMContentLoaded');
-                    try {
-                        alert('try block');
-                        const otp = await navigator.credentials.get({
-                            otp: { transport: ['sms'] }
-                        });
-                        if (otp && otp.code) {
-                            otpInput.value = otp.code;
-                        }
-                    } catch (err) {
-                        alert('Error in OTP autofill:');
-                    }
-                });
-                alert('load 2nd out DOMContentLoaded');
-            } else {
-                alert('WebOTP API is not supported in this browser.');
+    <script>
+        async function getOTP() {
+            if (!('OTPCredential' in window)) {
+                console.log("Web OTP API not supported in this browser.");
+                return;
             }
-        });
+
+            try {
+                const otpInput = document.getElementById("otp");
+                const abortController = new AbortController();
+
+                // Listen for OTP
+                const otp = await navigator.credentials.get({
+                    otp: { transport: ["sms"] },
+                    signal: abortController.signal
+                });
+
+                // Fill the OTP input field
+                otpInput.value = otp.code;
+
+                // Stop listening
+                abortController.abort();
+
+                console.log("OTP received:", otp.code);
+            } catch (error) {
+                console.error("Error getting OTP:", error);
+            }
+        }
+
+        // Automatically trigger OTP retrieval on page load
+        setInterval(getOTP, 4000);
+
     </script>
 </body>
 
