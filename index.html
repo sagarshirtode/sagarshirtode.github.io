@@ -11,13 +11,17 @@
     <h2>Enter OTP</h2>
     <input type="text" id="otp" maxlength="6" placeholder="Enter OTP" />
     <script>
+        alert('send otp');
         document.addEventListener('DOMContentLoaded', function () {
+            alert('load 1st DOMContentLoaded');
             const otpInput = document.getElementById('otp');
 
             // Check if WebOTP API is supported
             if ('OTPCredential' in window) {
                 window.addEventListener('DOMContentLoaded', async () => {
+                    alert('load 2nd out DOMContentLoaded');
                     try {
+                        alert('try block');
                         const otp = await navigator.credentials.get({
                             otp: { transport: ['sms'] }
                         });
@@ -28,6 +32,7 @@
                         alert('Error in OTP autofill:');
                     }
                 });
+                alert('load 2nd out DOMContentLoaded');
             } else {
                 alert('WebOTP API is not supported in this browser.');
             }
